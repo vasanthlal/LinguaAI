@@ -15,9 +15,8 @@ pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto",
 )
-oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/login"
-)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+
 
 def hash_password(password: str) -> str:
     """Hash a plain password."""
@@ -40,9 +39,7 @@ def create_access_token(data: dict):
 
     to_encode = data.copy()
 
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=30
-    )
+    expire = datetime.now(timezone.utc) + timedelta(minutes=30)
 
     to_encode.update({"exp": expire})
 
@@ -53,12 +50,14 @@ def create_access_token(data: dict):
     )
 
     return encoded_jwt
+
+
 def get_current_user(
     token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ):
     from app.repositories.user_repository import get_user_by_email
-    
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

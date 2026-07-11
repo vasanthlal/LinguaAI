@@ -2,7 +2,7 @@ from app.database.base import Base
 from app.database.connection import engine
 
 # Import models so SQLAlchemy knows about them
-from app.models.user import User
+import app.models  # noqa: F401
 
 print("Creating database tables...")
 

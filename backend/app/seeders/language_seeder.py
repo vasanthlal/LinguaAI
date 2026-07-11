@@ -70,11 +70,7 @@ def seed_languages(db: Session):
 
     for language in languages:
 
-        exists = (
-            db.query(Language)
-            .filter(Language.code == language["code"])
-            .first()
-        )
+        exists = db.query(Language).filter(Language.code == language["code"]).first()
 
         if not exists:
             db.add(Language(**language))

@@ -29,8 +29,4 @@ def get_learning_profile(
     db: Session,
     user_id: int,
 ):
-    return (
-        db.query(LearningProfile)
-        .filter(LearningProfile.user_id == user_id)
-        .first()
-    )
+    return db.query(LearningProfile).filter(LearningProfile.user_id == user_id).first()

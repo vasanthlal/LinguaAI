@@ -69,6 +69,4 @@ def delete_lesson(
     if not deleted:
         raise HTTPException(status_code=404, detail="Lesson not found")
 
-    return {
-        "message": "Lesson deleted successfully"
-    }
+    return {"message": "Lesson deleted successfully"}

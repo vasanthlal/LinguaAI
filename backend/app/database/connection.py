@@ -10,7 +10,4 @@ DATABASE_URL = (
     f"{settings.DATABASE_NAME}"
 )
 
-engine = create_engine(
-    DATABASE_URL,
-    echo=True
-)
+engine = create_engine(DATABASE_URL, echo=True)

@@ -21,6 +21,4 @@ class LessonUpdate(BaseModel):
 class LessonResponse(LessonBase):
     id: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}

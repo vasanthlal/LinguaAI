@@ -18,8 +18,7 @@ app.include_router(language_router)
 app.include_router(course_router)
 app.include_router(lesson_router)
 
+
 @app.get("/")
 def root():
-    return {
-        "message": "Welcome to LinguaAI API"
-    }
+    return {"message": "Welcome to LinguaAI API"}

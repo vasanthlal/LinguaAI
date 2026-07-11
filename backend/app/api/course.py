@@ -9,10 +9,7 @@ from app.schemas.course import (
 )
 from app.services import course_service
 
-router = APIRouter(
-    prefix="/courses",
-    tags=["Courses"]
-)
+router = APIRouter(prefix="/courses", tags=["Courses"])
 
 
 @router.get("/", response_model=list[CourseResponse])
@@ -69,6 +66,4 @@ def delete_course(
     if not deleted_course:
         raise HTTPException(status_code=404, detail="Course not found")
 
-    return {
-        "message": "Course deleted successfully"
-    }
+    return {"message": "Course deleted successfully"}

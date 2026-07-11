@@ -18,6 +18,4 @@ class LearningProfileResponse(BaseModel):
     daily_goal_minutes: int
     learning_goal: str
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}

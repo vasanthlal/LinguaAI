@@ -36,7 +36,7 @@ class Course(Base):
     )
 
     lessons = relationship(
-    "Lesson",
-    back_populates="course",
-    cascade="all, delete-orphan",
-   )
+        "Lesson",
+        back_populates="course",
+        cascade="all, delete-orphan",
+    )

@@ -18,9 +18,7 @@ def save_learning_profile(
     )
 
     if existing_profile:
-        raise Exception(
-            "Learning profile already exists."
-        )
+        raise Exception("Learning profile already exists.")
 
     return create_learning_profile(
         db,

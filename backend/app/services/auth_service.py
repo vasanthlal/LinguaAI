@@ -25,18 +25,14 @@ def register_user(
     )
 
     if existing_user:
-        logger.warning(
-            f"Registration failed: {user.email} already exists"
-        )
+        logger.warning(f"Registration failed: {user.email} already exists")
 
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered",
         )
 
-    logger.info(
-        f"Creating user: {user.email}"
-    )
+    logger.info(f"Creating user: {user.email}")
 
     return create_user(
         db,
@@ -57,9 +53,7 @@ def login_user(
     )
 
     if not user:
-        logger.warning(
-            f"Login failed: {email} not found"
-        )
+        logger.warning(f"Login failed: {email} not found")
 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -70,18 +64,14 @@ def login_user(
         password,
         user.password_hash,
     ):
-        logger.warning(
-            f"Login failed: Incorrect password for {email}"
-        )
+        logger.warning(f"Login failed: Incorrect password for {email}")
 
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password",
         )
 
-    logger.info(
-        f"User logged in successfully: {email}"
-    )
+    logger.info(f"User logged in successfully: {email}")
 
     access_token = create_access_token(
         data={
