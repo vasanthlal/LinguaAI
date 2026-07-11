@@ -34,3 +34,9 @@ class Course(Base):
         "Language",
         back_populates="courses",
     )
+
+    lessons = relationship(
+    "Lesson",
+    back_populates="course",
+    cascade="all, delete-orphan",
+   )
