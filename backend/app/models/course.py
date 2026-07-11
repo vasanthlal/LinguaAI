@@ -8,10 +8,29 @@ class Course(Base):
     __tablename__ = "courses"
 
     id = Column(Integer, primary_key=True, index=True)
-    language_id = Column(Integer, ForeignKey("languages.id"), nullable=False)
 
-    title = Column(String(150), nullable=False)
-    description = Column(Text, nullable=True)
-    level = Column(String(50), nullable=False)
+    language_id = Column(
+        Integer,
+        ForeignKey("languages.id"),
+        nullable=False,
+    )
 
-    language = relationship("Language", backref="courses")
+    title = Column(
+        String(150),
+        nullable=False,
+    )
+
+    description = Column(
+        Text,
+        nullable=True,
+    )
+
+    level = Column(
+        String(50),
+        nullable=False,
+    )
+
+    language = relationship(
+        "Language",
+        back_populates="courses",
+    )

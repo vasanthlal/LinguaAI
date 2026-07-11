@@ -1,6 +1,6 @@
 from sqlalchemy import Boolean, Integer, String
-from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.database.base import Base
 
 
@@ -41,6 +41,7 @@ class Language(Base):
     )
 
     courses = relationship(
-    "Course",
-    back_populates="language",
-)
+        "Course",
+        back_populates="language",
+        cascade="all, delete-orphan",
+    )
