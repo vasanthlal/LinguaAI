@@ -7,6 +7,7 @@ from alembic import context
 from app.database.base import Base
 from app.models.user import User
 from app.models.learning_profile import LearningProfile
+from app.models.language import Language
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
