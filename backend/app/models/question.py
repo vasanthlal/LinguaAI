@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Text, ForeignKey
+from sqlalchemy import Column, Integer, Text, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from app.database.base import Base
@@ -20,13 +20,41 @@ class Question(Base):
         nullable=False,
     )
 
+    question_type = Column(
+        String(30),
+        nullable=False,
+        default="MCQ",
+    )
+
     difficulty = Column(
         Integer,
         nullable=False,
         default=1,
     )
 
+    points = Column(
+        Integer,
+        nullable=False,
+        default=1,
+    )
+
+    explanation = Column(
+        Text,
+        nullable=True,
+    )
+
+    hint = Column(
+        Text,
+        nullable=True,
+    )
+
     quiz = relationship(
         "Quiz",
         back_populates="questions",
+    )
+
+    answer_options = relationship(
+        "AnswerOption",
+        back_populates="question",
+        cascade="all, delete-orphan",
     )

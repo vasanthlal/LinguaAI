@@ -8,6 +8,7 @@ from app.api.course import router as course_router
 from app.api.lesson import router as lesson_router
 from app.api.quiz import router as quiz_router
 from app.api.question import router as question_router
+from app.api.answer_option import router as answer_option_router
 
 app = FastAPI(
     title="LinguaAI API",
@@ -21,6 +22,7 @@ app.include_router(course_router)
 app.include_router(lesson_router)
 app.include_router(quiz_router)
 app.include_router(question_router)
+app.include_router(answer_option_router)
 @app.get("/")
 def root():
     return {"message": "Welcome to LinguaAI API"}
