@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, Text, String, ForeignKey
+from sqlalchemy import Column, Enum, Integer, Text, ForeignKey
 from sqlalchemy.orm import relationship
+from app.core.enums import QuestionType
 
 from app.database.base import Base
 
@@ -21,9 +22,9 @@ class Question(Base):
     )
 
     question_type = Column(
-        String(30),
+        Enum(QuestionType),
         nullable=False,
-        default="MCQ",
+        default=QuestionType.MCQ,
     )
 
     difficulty = Column(

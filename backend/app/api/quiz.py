@@ -69,6 +69,4 @@ def delete_quiz(
     if not deleted_quiz:
         raise HTTPException(status_code=404, detail="Quiz not found")
 
-    return {
-        "message": "Quiz deleted successfully"
-    }
+    return {"message": "Quiz deleted successfully"}

@@ -87,6 +87,4 @@ def delete_answer_option(
             detail="Answer option not found",
         )
 
-    return {
-        "message": "Answer option deleted successfully"
-    }
+    return {"message": "Answer option deleted successfully"}

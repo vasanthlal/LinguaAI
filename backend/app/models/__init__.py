@@ -6,6 +6,9 @@ from app.models.lesson import Lesson
 from app.models.quiz import Quiz as Quiz
 from app.models.question import Question as Question
 from app.models.answer_option import AnswerOption as AnswerOption
+from app.models.quiz_attempt import QuizAttempt as QuizAttempt
+from app.models.question_attempt import QuestionAttempt as QuestionAttempt
+
 __all__ = [
     "User",
     "LearningProfile",
@@ -15,4 +18,6 @@ __all__ = [
     "Quiz",
     "Question",
     "AnswerOption",
+    "QuizAttempt",
+    "QuestionAttempt",
 ]

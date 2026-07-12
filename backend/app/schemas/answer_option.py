@@ -21,6 +21,4 @@ class AnswerOptionUpdate(BaseModel):
 class AnswerOptionResponse(AnswerOptionBase):
     id: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}

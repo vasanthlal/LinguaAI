@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.question import Question
 from app.schemas.question import QuestionCreate, QuestionUpdate
+from app.models.answer_option import AnswerOption
 
 
 def get_all_questions(db: Session):
@@ -49,3 +50,24 @@ def delete_question(db: Session, question_id: int):
     db.commit()
 
     return db_question
+
+
+def get_answer_option_by_id(
+    db: Session,
+    answer_option_id: int,
+):
+    return db.query(AnswerOption).filter(AnswerOption.id == answer_option_id).first()
+
+
+def get_correct_answer(
+    db: Session,
+    question_id: int,
+):
+    return (
+        db.query(AnswerOption)
+        .filter(
+            AnswerOption.question_id == question_id,
+            AnswerOption.is_correct.is_(True),
+        )
+        .first()
+    )

@@ -19,6 +19,4 @@ class QuizUpdate(BaseModel):
 class QuizResponse(QuizBase):
     id: int
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}

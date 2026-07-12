@@ -15,11 +15,7 @@ def get_answer_option_by_id(
     db: Session,
     answer_option_id: int,
 ):
-    return (
-        db.query(AnswerOption)
-        .filter(AnswerOption.id == answer_option_id)
-        .first()
-    )
+    return db.query(AnswerOption).filter(AnswerOption.id == answer_option_id).first()
 
 
 def create_answer_option(

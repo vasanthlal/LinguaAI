@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 
@@ -39,4 +39,10 @@ class User(Base):
         DateTime,
         default=datetime.utcnow,
         onupdate=datetime.utcnow,
+    )
+
+    quiz_attempts = relationship(
+        "QuizAttempt",
+        back_populates="user",
+        cascade="all, delete-orphan",
     )

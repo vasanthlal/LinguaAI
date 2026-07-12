@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from app.core.exceptions import NotFoundException
 
 from app.database.session import get_db
 from app.schemas.question import (
@@ -33,7 +34,13 @@ def get_question(question_id: int, db: Session = Depends(get_db)):
     return question
 
 
-@router.post("/", response_model=QuestionResponse)
+@router.post(
+    "/",
+    response_model=QuestionResponse,
+    summary="Create a new question",
+    description="Create a new question for a quiz.",
+    response_description="The newly created question.",
+)
 def create_question(
     question: QuestionCreate,
     db: Session = Depends(get_db),
@@ -54,10 +61,7 @@ def update_question(
     )
 
     if not updated_question:
-        raise HTTPException(
-            status_code=404,
-            detail="Question not found",
-        )
+        raise NotFoundException("Question")
 
     return updated_question
 
@@ -73,11 +77,6 @@ def delete_question(
     )
 
     if not deleted_question:
-        raise HTTPException(
-            status_code=404,
-            detail="Question not found",
-        )
+        raise NotFoundException("Question")
 
-    return {
-        "message": "Question deleted successfully"
-    }
+    return {"message": "Question deleted successfully"}
