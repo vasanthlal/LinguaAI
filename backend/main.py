@@ -6,6 +6,7 @@ from app.api.learning_profile import router as learning_profile_router
 from app.api.language import router as language_router
 from app.api.course import router as course_router
 from app.api.lesson import router as lesson_router
+from app.api.quiz import router as quiz_router
 
 app = FastAPI(
     title="LinguaAI API",
@@ -17,7 +18,7 @@ app.include_router(learning_profile_router)
 app.include_router(language_router)
 app.include_router(course_router)
 app.include_router(lesson_router)
-
+app.include_router(quiz_router)
 
 @app.get("/")
 def root():

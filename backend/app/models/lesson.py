@@ -34,3 +34,9 @@ class Lesson(Base):
         "Course",
         back_populates="lessons",
     )
+
+    quizzes = relationship(
+    "Quiz",
+    back_populates="lesson",
+    cascade="all, delete-orphan",
+   )
