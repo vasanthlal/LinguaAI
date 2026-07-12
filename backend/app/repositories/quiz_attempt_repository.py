@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 
 from app.models.quiz_attempt import QuizAttempt
 from app.schemas.quiz_attempt import QuizAttemptCreate
+from datetime import datetime
 
 
 def get_quiz_attempt(db: Session, attempt_id: int):
@@ -26,7 +27,6 @@ def update_quiz_attempt(db: Session, quiz_attempt: QuizAttempt):
     db.refresh(quiz_attempt)
 
     return quiz_attempt
-from datetime import datetime
 
 
 def complete_quiz_attempt(
@@ -46,3 +46,16 @@ def complete_quiz_attempt(
     db.refresh(quiz_attempt)
 
     return quiz_attempt
+
+
+def create_quiz_attempt_no_commit(
+    db: Session,
+    quiz_attempt: QuizAttemptCreate,
+):
+    db_attempt = QuizAttempt(**quiz_attempt.model_dump())
+
+    db.add(db_attempt)
+    db.flush()  # gets the generated ID
+    db.refresh(db_attempt)
+
+    return db_attempt

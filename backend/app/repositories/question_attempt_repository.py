@@ -26,6 +26,8 @@ def get_question_attempts_by_quiz_attempt(
         .filter(QuestionAttempt.quiz_attempt_id == quiz_attempt_id)
         .all()
     )
+
+
 def create_question_attempts(
     db: Session,
     question_attempts: list[QuestionAttempt],
@@ -35,5 +37,16 @@ def create_question_attempts(
 
     for attempt in question_attempts:
         db.refresh(attempt)
+
+    return question_attempts
+
+
+def create_question_attempts_no_commit(
+    db: Session,
+    question_attempts: list[QuestionAttempt],
+):
+    db.add_all(question_attempts)
+
+    db.flush()
 
     return question_attempts

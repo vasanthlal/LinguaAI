@@ -54,6 +54,7 @@ app.include_router(question_router)
 app.include_router(answer_option_router)
 app.include_router(quiz_attempt_router)
 
+
 @app.get("/")
 def root():
     return {"message": "Welcome to LinguaAI API"}
