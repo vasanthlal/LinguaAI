@@ -1,10 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class QuizBase(BaseModel):
-    lesson_id: int
-    title: str
-    passing_score: int = 70
+    lesson_id: int = Field(..., gt=0)
+    title: str = Field(..., min_length=1, max_length=150)
+    passing_score: int = Field(default=70, ge=0, le=100)
 
 
 class QuizCreate(QuizBase):
@@ -12,11 +12,14 @@ class QuizCreate(QuizBase):
 
 
 class QuizUpdate(BaseModel):
-    title: str | None = None
-    passing_score: int | None = None
+    lesson_id: int | None = Field(default=None, gt=0)
+    title: str | None = Field(default=None, min_length=1, max_length=150)
+    passing_score: int | None = Field(default=None, ge=0, le=100)
 
 
 class QuizResponse(QuizBase):
     id: int
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+    }

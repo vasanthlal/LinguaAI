@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LessonBase(BaseModel):
-    course_id: int
-    title: str
-    content: str
-    order: int
+    course_id: int = Field(..., gt=0)
+    title: str = Field(..., min_length=1, max_length=150)
+    content: str = Field(..., min_length=1)
+    order: int = Field(..., gt=0)
 
 
 class LessonCreate(LessonBase):
@@ -13,12 +13,15 @@ class LessonCreate(LessonBase):
 
 
 class LessonUpdate(BaseModel):
-    title: str | None = None
-    content: str | None = None
-    order: int | None = None
+    course_id: int | None = Field(default=None, gt=0)
+    title: str | None = Field(default=None, min_length=1, max_length=150)
+    content: str | None = Field(default=None, min_length=1)
+    order: int | None = Field(default=None, gt=0)
 
 
 class LessonResponse(LessonBase):
     id: int
 
-    model_config = {"from_attributes": True}
+    model_config = {
+        "from_attributes": True,
+    }

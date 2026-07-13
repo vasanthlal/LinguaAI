@@ -39,6 +39,6 @@ class Quiz(Base):
 
     quiz_attempts = relationship(
         "QuizAttempt",
-        back_populates="user",
+        back_populates="quiz",
         cascade="all, delete-orphan",
     )
