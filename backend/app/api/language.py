@@ -3,7 +3,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
-from app.database.session import get_db
+from app.database import get_db
 from app.schemas.language import (
     LanguageCreate,
     LanguageResponse,
@@ -42,7 +42,16 @@ def get_languages(
     ),
     is_active: Optional[bool] = Query(
         None,
-        description="Filter by active status",
+        description="Filter active/inactive languages",
+    ),
+    sort_by: str = Query(
+        "name",
+        description="Sort by: id, name, code",
+    ),
+    order: str = Query(
+        "asc",
+        pattern="^(asc|desc)$",
+        description="Sort order",
     ),
     db: Session = Depends(get_db),
 ):
@@ -52,6 +61,8 @@ def get_languages(
         limit=limit,
         search=search,
         is_active=is_active,
+        sort_by=sort_by,
+        order=order,
     )
 
 

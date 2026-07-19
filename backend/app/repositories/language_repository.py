@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 
 from app.models.language import Language
@@ -12,6 +13,8 @@ def get_all_languages(
     limit: int = 10,
     search: Optional[str] = None,
     is_active: Optional[bool] = None,
+    sort_by: str = "name",
+    order: str = "asc",
 ):
     query = db.query(Language)
 
@@ -21,8 +24,21 @@ def get_all_languages(
     if is_active is not None:
         query = query.filter(Language.is_active == is_active)
 
+    sort_columns = {
+        "id": Language.id,
+        "name": Language.name,
+        "code": Language.code,
+    }
+
+    sort_column = sort_columns.get(sort_by, Language.name)
+
+    if order.lower() == "desc":
+        query = query.order_by(desc(sort_column))
+    else:
+        query = query.order_by(asc(sort_column))
+
     return (
-        query.order_by(Language.name)
+        query
         .offset(skip)
         .limit(limit)
         .all()

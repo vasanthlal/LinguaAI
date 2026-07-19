@@ -23,6 +23,8 @@ def list_languages(
     limit: int = 10,
     search: Optional[str] = None,
     is_active: Optional[bool] = None,
+    sort_by: str = "name",
+    order: str = "asc",
 ):
     return get_all_languages(
         db=db,
@@ -30,6 +32,8 @@ def list_languages(
         limit=limit,
         search=search,
         is_active=is_active,
+        sort_by=sort_by,
+        order=order,
     )
 
 
