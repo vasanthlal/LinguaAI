@@ -1,11 +1,32 @@
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
 from app.models.language import Language
 from app.schemas.language import LanguageCreate, LanguageUpdate
 
 
-def get_all_languages(db: Session):
-    return db.query(Language).filter(Language.is_active).order_by(Language.name).all()
+def get_all_languages(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+):
+    query = db.query(Language)
+
+    if search:
+        query = query.filter(Language.name.ilike(f"%{search}%"))
+
+    if is_active is not None:
+        query = query.filter(Language.is_active == is_active)
+
+    return (
+        query.order_by(Language.name)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 def get_language_by_id(

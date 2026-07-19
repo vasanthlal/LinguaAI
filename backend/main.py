@@ -11,6 +11,8 @@ from app.api.question import router as question_router
 from app.api.answer_option import router as answer_option_router
 from app.api.quiz_attempt import router as quiz_attempt_router
 
+from app.core.error_handlers import register_exception_handlers
+
 app = FastAPI(
     title="LinguaAI API",
     description="""
@@ -31,9 +33,9 @@ LinguaAI is an AI-powered language learning platform.
 
 ### Version
 
-v1.0.0
+v1.1.0
 """,
-    version="1.0.0",
+    version="1.1.0",
     contact={
         "name": "Vasanthlal",
         "email": "your-email@example.com",
@@ -43,6 +45,10 @@ v1.0.0
     },
 )
 
+# Register global exception handlers
+register_exception_handlers(app)
+
+# Register API routers
 app.include_router(auth_router)
 app.include_router(chat_router)
 app.include_router(learning_profile_router)
@@ -57,4 +63,8 @@ app.include_router(quiz_attempt_router)
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to LinguaAI API"}
+    return {
+        "message": "Welcome to LinguaAI API",
+        "version": "1.1.0",
+        "status": "Running",
+    }

@@ -1,7 +1,8 @@
-from fastapi import HTTPException, status
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
-# from app.models.language import Language
+from app.core.exceptions import BadRequestException, NotFoundException
 from app.repositories.language_repository import (
     create_language,
     delete_language,
@@ -16,8 +17,20 @@ from app.schemas.language import (
 )
 
 
-def list_languages(db: Session):
-    return get_all_languages(db)
+def list_languages(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+):
+    return get_all_languages(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+    )
 
 
 def get_language(
@@ -30,10 +43,7 @@ def get_language(
     )
 
     if language is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Language not found",
-        )
+        raise NotFoundException("Language not found")
 
     return language
 
@@ -48,10 +58,7 @@ def create_new_language(
     )
 
     if existing:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Language code already exists",
-        )
+        raise BadRequestException("Language code already exists")
 
     return create_language(
         db,
@@ -70,10 +77,7 @@ def update_existing_language(
     )
 
     if db_language is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Language not found",
-        )
+        raise NotFoundException("Language not found")
 
     existing = get_language_by_code(
         db,
@@ -81,10 +85,7 @@ def update_existing_language(
     )
 
     if existing and existing.id != language_id:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Language code already exists",
-        )
+        raise BadRequestException("Language code already exists")
 
     return update_language(
         db,
@@ -103,10 +104,7 @@ def delete_existing_language(
     )
 
     if db_language is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Language not found",
-        )
+        raise NotFoundException("Language not found")
 
     delete_language(
         db,

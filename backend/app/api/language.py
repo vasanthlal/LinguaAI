@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends
+from typing import List, Optional
+
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
@@ -21,35 +23,39 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "/",
-    response_model=LanguageResponse,
-    status_code=201,
-)
-def create_language(
-    language: LanguageCreate,
+@router.get("/", response_model=List[LanguageResponse])
+def get_languages(
+    skip: int = Query(
+        0,
+        ge=0,
+        description="Number of records to skip",
+    ),
+    limit: int = Query(
+        10,
+        ge=1,
+        le=100,
+        description="Maximum number of records to return",
+    ),
+    search: Optional[str] = Query(
+        None,
+        description="Search by language name",
+    ),
+    is_active: Optional[bool] = Query(
+        None,
+        description="Filter by active status",
+    ),
     db: Session = Depends(get_db),
 ):
-    return create_new_language(
-        db,
-        language,
+    return list_languages(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
     )
 
 
-@router.get(
-    "/",
-    response_model=list[LanguageResponse],
-)
-def get_languages(
-    db: Session = Depends(get_db),
-):
-    return list_languages(db)
-
-
-@router.get(
-    "/{language_id}",
-    response_model=LanguageResponse,
-)
+@router.get("/{language_id}", response_model=LanguageResponse)
 def get_language_by_id(
     language_id: int,
     db: Session = Depends(get_db),
@@ -60,10 +66,18 @@ def get_language_by_id(
     )
 
 
-@router.put(
-    "/{language_id}",
-    response_model=LanguageResponse,
-)
+@router.post("/", response_model=LanguageResponse, status_code=201)
+def create_language(
+    language: LanguageCreate,
+    db: Session = Depends(get_db),
+):
+    return create_new_language(
+        db,
+        language,
+    )
+
+
+@router.put("/{language_id}", response_model=LanguageResponse)
 def update_language(
     language_id: int,
     language: LanguageUpdate,
@@ -76,9 +90,7 @@ def update_language(
     )
 
 
-@router.delete(
-    "/{language_id}",
-)
+@router.delete("/{language_id}")
 def delete_language(
     language_id: int,
     db: Session = Depends(get_db),
