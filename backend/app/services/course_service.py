@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -5,8 +7,24 @@ from app.repositories import course_repository
 from app.schemas.course import CourseCreate, CourseUpdate
 
 
-def get_courses(db: Session):
-    return course_repository.get_all_courses(db)
+def get_courses(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+    sort_by: str = "title",
+    order: str = "asc",
+):
+    return course_repository.get_all_courses(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        sort_by=sort_by,
+        order=order,
+    )
 
 
 def get_course(
