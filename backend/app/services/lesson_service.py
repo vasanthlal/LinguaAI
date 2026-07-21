@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -5,8 +7,24 @@ from app.repositories import lesson_repository
 from app.schemas.lesson import LessonCreate, LessonUpdate
 
 
-def get_lessons(db: Session):
-    return lesson_repository.get_all_lessons(db)
+def get_lessons(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+    sort_by: str = "title",
+    order: str = "asc",
+):
+    return lesson_repository.get_all_lessons(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        sort_by=sort_by,
+        order=order,
+    )
 
 
 def get_lesson(
