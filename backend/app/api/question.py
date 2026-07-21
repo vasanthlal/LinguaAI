@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status
+from typing import Optional
+
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
@@ -20,9 +22,45 @@ router = APIRouter(
     response_model=list[QuestionResponse],
 )
 def get_questions(
+    skip: int = Query(
+        0,
+        ge=0,
+        description="Number of records to skip",
+    ),
+    limit: int = Query(
+        10,
+        ge=1,
+        le=100,
+        description="Maximum number of records to return",
+    ),
+    search: Optional[str] = Query(
+        None,
+        description="Search by question text",
+    ),
+    is_active: Optional[bool] = Query(
+        None,
+        description="Filter active/inactive questions",
+    ),
+    sort_by: str = Query(
+        "id",
+        description="Sort by: id, text",
+    ),
+    order: str = Query(
+        "asc",
+        pattern="^(asc|desc)$",
+        description="Sort order",
+    ),
     db: Session = Depends(get_db),
 ):
-    return question_service.get_questions(db)
+    return question_service.get_questions(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        sort_by=sort_by,
+        order=order,
+    )
 
 
 @router.get(

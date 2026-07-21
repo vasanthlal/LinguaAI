@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -5,8 +7,24 @@ from app.repositories import question_repository
 from app.schemas.question import QuestionCreate, QuestionUpdate
 
 
-def get_questions(db: Session):
-    return question_repository.get_all_questions(db)
+def get_questions(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+    sort_by: str = "id",
+    order: str = "asc",
+):
+    return question_repository.get_all_questions(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        sort_by=sort_by,
+        order=order,
+    )
 
 
 def get_question(
