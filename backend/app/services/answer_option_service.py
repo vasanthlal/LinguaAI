@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -8,8 +10,24 @@ from app.schemas.answer_option import (
 )
 
 
-def get_answer_options(db: Session):
-    return answer_option_repository.get_all_answer_options(db)
+def get_answer_options(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    search: Optional[str] = None,
+    is_active: Optional[bool] = None,
+    sort_by: str = "id",
+    order: str = "asc",
+):
+    return answer_option_repository.get_all_answer_options(
+        db=db,
+        skip=skip,
+        limit=limit,
+        search=search,
+        is_active=is_active,
+        sort_by=sort_by,
+        order=order,
+    )
 
 
 def get_answer_option(
