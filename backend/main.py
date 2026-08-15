@@ -1,17 +1,23 @@
 from fastapi import FastAPI
 
+from app.api.answer_option import router as answer_option_router
 from app.api.auth import router as auth_router
 from app.api.chat import router as chat_router
-from app.api.learning_profile import router as learning_profile_router
-from app.api.language import router as language_router
 from app.api.course import router as course_router
+from app.api.language import router as language_router
+from app.api.learning_profile import router as learning_profile_router
 from app.api.lesson import router as lesson_router
-from app.api.quiz import router as quiz_router
 from app.api.question import router as question_router
-from app.api.answer_option import router as answer_option_router
+from app.api.quiz import router as quiz_router
 from app.api.quiz_attempt import router as quiz_attempt_router
-
 from app.core.error_handlers import register_exception_handlers
+from app.core.logging_config import setup_logging
+from app.middleware.request_logging import RequestLoggingMiddleware
+from app.middleware.security_headers import SecurityHeadersMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+
+# Configure application logging
+setup_logging()
 
 app = FastAPI(
     title="LinguaAI API",
@@ -30,6 +36,7 @@ LinguaAI is an AI-powered language learning platform.
 - Quiz Management
 - Question Management
 - Answer Option Management
+- Quiz Attempt Management
 
 ### Version
 
@@ -45,6 +52,9 @@ v1.1.0
     },
 )
 
+# Register middleware
+app.add_middleware(RequestLoggingMiddleware)
+
 # Register global exception handlers
 register_exception_handlers(app)
 
@@ -59,12 +69,43 @@ app.include_router(quiz_router)
 app.include_router(question_router)
 app.include_router(answer_option_router)
 app.include_router(quiz_attempt_router)
+app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(SecurityHeadersMiddleware)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.get("/")
+@app.get(
+    "/",
+    tags=["Root"],
+    summary="Root Endpoint",
+)
 def root():
     return {
         "message": "Welcome to LinguaAI API",
         "version": "1.1.0",
         "status": "Running",
+    }
+
+
+@app.get(
+    "/health",
+    tags=["Health"],
+    summary="Health Check",
+)
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "LinguaAI API",
+        "version": "1.1.0",
     }
